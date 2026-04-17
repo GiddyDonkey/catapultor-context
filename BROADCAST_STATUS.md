@@ -1,6 +1,6 @@
 # BROADCAST_STATUS.md — Current state of the Broadcast build
 
-**Last updated by:** Claude Code — 2026-04-16 (session 3 — five fixes)
+**Last updated by:** Claude Code — 2026-04-16 (session 5 — voice tuning + agent infra)
 **Operating mode:** AUTONOMOUS — keep working until Phase 1a acceptance criteria are met and the end-to-end smoke test passes. No stopping to ask.
 
 ## Current phase
@@ -99,16 +99,28 @@ Phase 1a — Foundation + Tier 1 (execute continuously)
 - [x] **FIX P2:** Credential diagnostic — simplified to direct BROADCAST_* name checks. Diagnostic is accurate: vars genuinely not present on Railway (confirmed with envVarStatus showing all false).
 - [x] **FIX P3:** OpenAI image gen — root cause was invalid size 1792x1024 (valid: 1024x1024, 1024x1536, 1536x1024). Fixed to 1536x1024. Added 5 hard quality constraints to every prompt. Added GPT-4o vision quality gate with 3-attempt retry. Regenerated hero image: PASSED quality gate on first attempt.
 - [x] **FIX P4:** Blank /broadcast/articles — added redirect to /broadcast. Added ComingSoon placeholders for /broadcast/drafts, /broadcast/monetization, /broadcast/alerts.
+- [x] **FIX P5:** Voice re-seed from broadcast-seeds/voice-examples.md — wiped 8 placeholders, loaded 43 gold headlines + 6 punchlines + 2 stats
+- [x] **FIX P6:** headline_ideation v3 + article_body v3 activated — requirement language (1-in-3 profanity minimum, topic diversity directives, self-audit rules), temperatures bumped (headline 0.95, article 0.9), v1/v2 retained inactive
+- [x] **FIX P7:** Few-shot injection fix — removed hardcoded cap of 5, per-key limits added, 30 gold headlines now injected per headline generation, 10 for article_body (article_intro remapped to headline category as workaround since intro examples not curated)
+- [x] **FIX P8:** Dashboard product model — idea seed input promoted to primary CTA with optional structured fields (tone hint, must-include, avoid). BROADCAST_SPEC.md Section 1 updated to clarify user-originated ideas are primary, recommendations secondary.
+- [x] **FIX P9:** Public context mirror at https://github.com/GiddyDonkey/catapultor-context — 6 non-sensitive docs mirrored with auto-scrub sync script at scripts/sync-public-context.sh
+- [x] **FIX P10:** Backlog progression agent infrastructure — GitHub Actions workflow on 8h cron, agent-safe allowlist, kill switch, tracking issue, task prompt template
 
 ### In flight
-- [ ] Platform credential verification on Railway (env vars not present — Jason action required)
+- [ ] Backlog progression agent first run (triggered, monitoring)
 
 ### Next up (execute in order)
-1. **Jason action:** Verify BROADCAST_* env vars are actually set in Railway on the catapultor-backend service. Diagnostic URL: https://catapultor-backend-production-c071.up.railway.app/api/broadcast/health/credentials shows all 7 as false.
-2. Credential auth verification passes for all 3 platforms
-3. Jason reviews test article in dashboard at https://www.catapultor.com/broadcast/articles/52bb5195-7374-46df-b21c-61fac8cf364d
-4. End-to-end publish test (only after Jason approves)
-5. Image quality iteration (after first publish confirms pipeline works)
+1. Jason reviews chloroform test article at https://www.catapultor.com/broadcast/articles/8384cb70-78f2-4806-b4ae-6959a716afc2 — voice landing validation
+2. Decision: voice landing accepted → proceed to BRD-007, or further prompt tuning needed
+3. Review PRs produced by backlog progression agent (check [Agent] prefix PRs)
+4. Jason verifies BROADCAST_* env vars on Railway (still blocking external publish)
+5. End-to-end publish test (after credential verification + Jason approval)
+
+## Pending Jason decisions
+
+- **Voice landing check:** Review chloroform test article output at /broadcast. Does the headline/article body match Fried Ocean's actual range? If not, what's missing?
+- **BRD-007 build kickoff:** Natural language iteration (P0 in backlog). Waiting on voice landing before starting, since iteration quality depends on voice fidelity.
+- **Credential verification:** All 7 BROADCAST_* env vars show present+valid on Railway as of session 3. External publish test deferred until Jason explicitly approves.
 
 ## Decisions made autonomously
 
