@@ -65,3 +65,15 @@ Update `BROADCAST_STATUS.md` with:
 - Non-destructive: existing Fried Ocean operations must not break. Make and Later continue in parallel.
 - Image quality: matches Jason's manual ChatGPT output. Iterate until true.
 - Deployed and working: Phase 1a is not done until a real article has been published end-to-end through the system.
+
+## Public context mirror
+
+A public repo at https://github.com/GiddyDonkey/catapultor-context mirrors non-sensitive context files (backlog, spec, status, voice examples) so Claude chat sessions can fetch them via `web_fetch`.
+
+After updating CATAPULTOR_BACKLOG.md, BROADCAST_SPEC.md, BROADCAST_STATUS.md, BROADCAST_CLAUDE.md, or broadcast-seeds/voice-examples.md, run:
+
+```bash
+bash scripts/sync-public-context.sh
+```
+
+This copies the designated files, scrubs for secrets, commits, and pushes to the public repo. Do NOT manually copy files — always use the script.

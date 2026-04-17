@@ -95,7 +95,7 @@ Phase 1a — Foundation + Tier 1 (execute continuously)
 - [x] Fix image persistence: all generated images now uploaded to Supabase Storage (ephemeral provider URLs expire)
 - [x] Multi-name env var fallback for platform credentials (BROADCAST_*, WP_*, WORDPRESS_*, META_*, FB_*, MAILCHIMP_*)
 - [x] Credential health check diagnostic endpoint at /api/broadcast/health/credentials
-- [x] **FIX P1:** Auth — Jason's account found ([redacted email], workspace ownership transferred), password reset, workspace ownership transferred. ProtectedRoute now redirects to /login?returnTo= for /broadcast/* routes.
+- [x] **FIX P1:** Auth — Jason's account found ([REDACTED].com, id: 9d133584), password reset, workspace ownership transferred. ProtectedRoute now redirects to /login?returnTo= for /broadcast/* routes.
 - [x] **FIX P2:** Credential diagnostic — simplified to direct BROADCAST_* name checks. Diagnostic is accurate: vars genuinely not present on Railway (confirmed with envVarStatus showing all false).
 - [x] **FIX P3:** OpenAI image gen — root cause was invalid size 1792x1024 (valid: 1024x1024, 1024x1536, 1536x1024). Fixed to 1536x1024. Added 5 hard quality constraints to every prompt. Added GPT-4o vision quality gate with 3-attempt retry. Regenerated hero image: PASSED quality gate on first attempt.
 - [x] **FIX P4:** Blank /broadcast/articles — added redirect to /broadcast. Added ComingSoon placeholders for /broadcast/drafts, /broadcast/monetization, /broadcast/alerts.
