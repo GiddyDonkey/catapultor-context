@@ -77,3 +77,27 @@ bash scripts/sync-public-context.sh
 ```
 
 This copies the designated files, scrubs for secrets, commits, and pushes to the public repo. Do NOT manually copy files — always use the script.
+
+## Persistent Agents
+
+### Backlog Progression Agent
+
+An autonomous GitHub Actions agent that continuously works through the Catapultor backlog on an 8-hour cadence.
+
+- **Workflow:** `.github/workflows/backlog-progression-agent.yml`
+- **Schedule:** Every 8 hours (cron `0 */8 * * *`) + manual dispatch
+- **Tracking:** GitHub issue "Backlog Progression Agent — Activity Log" (label: `agent-log`)
+- **Allowlist:** `AGENT_SAFE_ITEMS.md` — only items marked `agent_safe: yes` are eligible
+- **Kill switch:** Repository variable `AGENTS_ENABLED` — set to `false` to stop. Script: `bash scripts/halt-agents.sh`
+- **Schedule tuning:** `bash scripts/set-agent-schedule.sh "0 */6 * * *"`
+- **Budget:** $3/run, cost ceiling = runs/day x $3
+- **Branch rule:** Agent NEVER commits to main. All work on `agent/*` branches, reaches main via PR only.
+- **Review:** Jason reviews `[Agent]`-prefixed PRs before merging. Check tracking issue for run summaries.
+
+### Morning review checklist for Jason
+
+1. Read tracking issue (latest comments)
+2. Check open PRs with `[Agent]` prefix
+3. Verify cost in Anthropic + OpenAI dashboards
+4. Review and merge good PRs, close bad ones
+5. Check if `AGENTS_ENABLED` is still `true`
